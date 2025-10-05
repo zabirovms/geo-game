@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {getActiveLanguage, getTranslate} from 'react-localize-redux';
-import * as am4core from "@amcharts/amcharts4/core";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { withTranslation } from 'react-i18next';
+import * as am4core from '@amcharts/amcharts4/core';
+import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import {footerItems, locale} from '../constants';
 import {supportedGameLocales} from '../services/localizationService';
 import {areas} from '../services/countriesService';
@@ -19,21 +18,21 @@ am4core.useTheme(am4themes_animated);
 class StartScreen extends Component {
 
   render() {
-    const {selectedLocale, translate} = this.props,
+    const {selectedLocale, t} = this.props,
       localizedModes = {
-        countryName: translate('modes.country-name'),
-        capital: translate('modes.capital'),
-        flag: translate('modes.flag'),
-        quiz: translate('modes.quiz')
+        countryName: t('modes.country-name'),
+        capital: t('modes.capital'),
+        flag: t('modes.flag'),
+        quiz: t('modes.quiz')
       },
-      localizedAreas = areas.map(area => ({id: area, label: translate(`continents.${area}`)}));
+      localizedAreas = areas.map(area => ({id: area, label: t(`data.continents.${area}`)}));
 
     return (
       <div className="container">
         <Header
-          title={translate('header.title')}
-          sub-title={translate('header.sub-title')}
-          description={translate('header.description')}>
+          title={t('header.title')}
+          sub-title={t('header.sub-title')}
+          description={t('header.description')}>
           <LocaleSelect locales={supportedGameLocales} selectedLocale={selectedLocale}/>
         </Header>
         <AreaList items={localizedAreas} modes={localizedModes} selectedLocale={selectedLocale}/>
@@ -42,7 +41,7 @@ class StartScreen extends Component {
           <RotatingGlobe />
         </div>
         <PageFooter locale={locale} items={footerItems.map(item => ({
-          text: item.text || translate(`footer.${item.id}`),
+          text: item.text || t(`footer.${item.id}`),
           url: item.url
         }))}/>
       </div>
@@ -51,11 +50,4 @@ class StartScreen extends Component {
 
 }
 
-const mapStateToProps = state => ({
-  translate: getTranslate(state.locale),
-  selectedLocale: getActiveLanguage(state.locale).code
-});
-
-export default connect(
-  mapStateToProps
-)(StartScreen);
+export default withTranslation()(StartScreen);

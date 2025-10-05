@@ -18,7 +18,7 @@ class GameMap extends Component {
     this.state = {
       feedbackDisplayed: undefined,
       mapServiceUrl: mapConfig.serviceUrl,
-      scrollWheelZoom: true,
+      scrollWheelZoom: true
     };
   }
 

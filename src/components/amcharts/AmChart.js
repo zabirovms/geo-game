@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
+import * as am4core from '@amcharts/amcharts4/core';
+import * as am4maps from '@amcharts/amcharts4/maps';
 
 class AmChart extends Component {
   componentDidMount() {
@@ -25,15 +25,15 @@ class AmChart extends Component {
     polygonSeries.useGeodata = true;
 
     let polygonTemplate = polygonSeries.mapPolygons.template;
-    polygonTemplate.tooltipText = "{name}";
+    polygonTemplate.tooltipText = '{name}';
     polygonTemplate.fill = chart.colors.getIndex(0).lighten(0.5);
 
-    let hs = polygonTemplate.states.create("hover");
+    let hs = polygonTemplate.states.create('hover');
     hs.properties.fill = chart.colors.getIndex(0);
 
     chart.zoomControl = new am4maps.ZoomControl();
 
-    polygonTemplate.events.on("hit", function(ev) {
+    polygonTemplate.events.on('hit', function(ev) {
       ev.target.series.chart.zoomToMapObject(ev.target);
     });
 
@@ -51,14 +51,14 @@ class AmChart extends Component {
 
     if (config.homeButton) {
       let homeButton = new am4core.Button();
-      homeButton.events.on("hit", function(){
+      homeButton.events.on('hit', function(){
         chart.goHome();
       });
 
       homeButton.icon = new am4core.Sprite();
       homeButton.padding(7, 5, 7, 5);
       homeButton.width = 30;
-      homeButton.icon.path = "M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8";
+      homeButton.icon.path = 'M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8';
       homeButton.marginBottom = 10;
       homeButton.parent = chart.zoomControl;
       homeButton.insertBefore(chart.zoomControl.plusButton);
@@ -75,7 +75,7 @@ class AmChart extends Component {
 
   render() {
     return (
-      <div ref={(el) => { this.chartdiv = el; }} style={{ width: "100%", height: "500px" }}></div>
+      <div ref={(el) => { this.chartdiv = el; }} style={{ width: '100%', height: '500px' }}></div>
     );
   }
 }

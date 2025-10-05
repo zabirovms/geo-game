@@ -45,7 +45,7 @@ const defaultMapZoom = {
         ...defaultMapZoom
       }
     },
-    'quiz': {
+    quiz: {
       center: [0, 0],
       zoom: defaultMapZoom
     }

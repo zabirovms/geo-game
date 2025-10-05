@@ -30,11 +30,11 @@ export const mapConfig = {
 export const footerItems = [
   {id: 'credits', url: 'https://marc-ed-raffalli.github.io/en/projects/geo-game#credits'},
   {id: 'about', url: 'https://marc-ed-raffalli.github.io/en/projects/geo-game'},
-  {id: 'issue', url: 'https://github.com/marc-ed-raffalli/geo-game/issues'},
+  {id: 'issue', url: 'https://github.com/marc-ed-raffalli/geo-game/issues'}
 ];
 
 export const colors = {
-  'default': 'transparent',
+  default: 'transparent',
   active: '#0275d8',
   greenOk: '#5cb85c',
   redError: '#d9534f'

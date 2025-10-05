@@ -61,5 +61,5 @@ export default mapActionToReducer({
   [Game.RESULTS]: showResults,
   [Game.STOP]: stop,
   [Game.SET]: set,
-  [Game.ANSWER_CURRENT_QUESTION]: answerQuestion,
+  [Game.ANSWER_CURRENT_QUESTION]: answerQuestion
 }, defaultGameState);

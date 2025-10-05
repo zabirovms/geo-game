@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, Suspense} from 'react';
 import {connect} from 'react-redux';
-import {Redirect, Route} from 'react-router-dom';
-import {addTranslationForLanguage, initialize, setActiveLanguage} from 'react-localize-redux';
+import {Redirect, Route, withRouter} from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
 
 import StartScreen from './StartScreen';
 import GameScreen from './GameScreen';
@@ -10,9 +10,7 @@ import Loader from '../components/common/Loader';
 import {isAreaIdValid} from '../services/countriesService';
 import {
   getBestMatchingLocale,
-  getTranslation,
-  isLocaleSupported,
-  supportedGameLocales
+  isLocaleSupported
 } from '../services/localizationService';
 
 import {gameModes} from '../constants';
@@ -21,10 +19,7 @@ import {load as loadProfile} from '../actions/profileActions';
 class LocalizedRoute extends Component {
 
   constructor(props) {
-    super();
-
-    props.initializeLocalization();
-
+    super(props);
     this.state = {
       currentLocale: undefined
     };
@@ -32,18 +27,20 @@ class LocalizedRoute extends Component {
 
   componentDidMount() {
     this.props.loadProfile('unknown');
+    this.setLocale(this.props.match.params.locale);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setLocale(nextProps.match.params.locale);
+  componentDidUpdate(prevProps) {
+    const newLocale = this.props.match.params.locale;
+    if (newLocale && newLocale !== prevProps.match.params.locale) {
+      this.setLocale(newLocale);
+    }
   }
 
   setLocale(locale) {
     if (locale && locale !== this.state.currentLocale && isLocaleSupported(locale)) {
-      this.props.setLocale(locale)
+      this.props.i18n.changeLanguage(locale)
         .then(() => {
-          // only set the locale after it is loaded
-          // fix for game loading in en after page refresh
           this.setState(() => ({currentLocale: locale}));
         });
     }
@@ -62,23 +59,24 @@ class LocalizedRoute extends Component {
     }
 
     return (
-      <div className="h-100">
-        <Route path={`${match.url}/:area/:mode`}
-               render={({match, ...args}) => {
-                 const areaId = match.params.area,
-                   mode = match.params.mode;
+      <Suspense fallback={<Loader/>}>
+        <div className="h-100">
+          <Route path={`${match.url}/:area/:mode`}
+            render={({match, ...args}) => {
+              const areaId = match.params.area,
+                mode = match.params.mode;
 
-                 return isAreaIdValid(areaId) && gameModes[mode] !== undefined
-                   ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
-                   : (<Redirect to={match.url}/>);
-               }}/>
-        <Route exact
-               path={match.url}
-               render={() => <StartScreen selectedLocale={locale}/>}/>
-      </div>
+              return isAreaIdValid(areaId) && gameModes[mode] !== undefined
+                ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
+                : (<Redirect to={match.url}/>);
+            }}/>
+          <Route exact
+            path={match.url}
+            render={() => <StartScreen selectedLocale={locale}/>}/>
+        </div>
+      </Suspense>
     );
   }
-
 }
 
 const mapStateToProps = state => ({
@@ -86,19 +84,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadProfile: id => dispatch(loadProfile(id)),
-  initializeLocalization: () => {
-    dispatch(initialize(supportedGameLocales));
-  },
-  setLocale: locale =>
-    getTranslation(locale)
-      .then(translations => {
-        dispatch(addTranslationForLanguage(translations, locale));
-        dispatch(setActiveLanguage(locale));
-      })
+  loadProfile: id => dispatch(loadProfile(id))
 });
 
-export default connect(
+export default withRouter(withTranslation()(connect(
   mapStateToProps,
   mapDispatchToProps
-)(LocalizedRoute);
+)(LocalizedRoute)));

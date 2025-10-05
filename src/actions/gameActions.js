@@ -92,10 +92,10 @@ export const showResults = () => (dispatch, getState) => {
   }
 
   const colorsByName = gameState.questions.reduce((res, question, index) => {
-      const answer = gameState.answers[index];
-      res[question.id] = answer === question.display ? colors.greenOk : colors.redError;
-      return res;
-    }, {});
+    const answer = gameState.answers[index];
+    res[question.id] = answer === question.display ? colors.greenOk : colors.redError;
+    return res;
+  }, {});
 
   dispatch(mapActions.highlightFeatures(colorsByName));
 

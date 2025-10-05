@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {GeoJSON, Map, Marker, TileLayer} from 'react-leaflet';
+import {GeoJSON, MapContainer, Marker, TileLayer} from 'react-leaflet';
 
 import {divIcon} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -30,7 +30,7 @@ export default class InteractiveMap extends Component {
   constructor() {
     super();
     this.state = {
-      height: 0,  // wait for the render
+      height: 0  // wait for the render
     };
   }
 
@@ -49,9 +49,9 @@ export default class InteractiveMap extends Component {
 
     return (
       <div className={classNames.join(' ')}
-           ref={elt => {
-             this.mapElt = elt;
-           }}
+        ref={elt => {
+          this.mapElt = elt;
+        }}
       >
         {this.state.height !== 0 ? this.renderMap() : undefined}
       </div>
@@ -65,22 +65,22 @@ export default class InteractiveMap extends Component {
       };
 
     return (
-      <Map style={mapStyle}
-           center={props.center}
-           scrollWheelZoom={props.scrollWheelZoom}
-           maxBounds={props.maxBounds}
-           zoom={props.zoom}>
+      <MapContainer style={mapStyle}
+        center={props.center}
+        scrollWheelZoom={props.scrollWheelZoom}
+        maxBounds={props.maxBounds}
+        zoom={props.zoom}>
 
         <TileLayer url={props.mapServiceUrl}
-                   noWrap={true}
-                   minZoom={props.minZoom}
-                   maxZoom={props.maxZoom}
-                   attribution={props.attributions}/>
+          noWrap={true}
+          minZoom={props.minZoom}
+          maxZoom={props.maxZoom}
+          attribution={props.attributions}/>
 
         {this.buildGeoJsonLayer()}
         {this.buildMarkers()}
         {this.buildPopupLayer()}
-      </Map>
+      </MapContainer>
     );
   }
 
@@ -89,9 +89,9 @@ export default class InteractiveMap extends Component {
 
     return this.props.geoJson
       ? <GeoJSON data={this.props.geoJson}
-                 style={defaultStyle}
-                 key={this.geoJsonLayerKey}
-                 onEachFeature={this.defineFeature.bind(this)}/>
+        style={defaultStyle}
+        key={this.geoJsonLayerKey}
+        onEachFeature={this.defineFeature.bind(this)}/>
       : undefined;
   }
 
@@ -114,16 +114,16 @@ export default class InteractiveMap extends Component {
     return props.markers
       .map(marker => (
         <Marker position={marker.properties.latlng}
-                icon={this.buildMarkerDiv(marker)}
-                key={`${marker.id}-${marker.type}`}
-                onclick={() => props.onFeatureClick(marker)}/>
+          icon={this.buildMarkerDiv(marker)}
+          key={`${marker.id}-${marker.type}`}
+          onclick={() => props.onFeatureClick(marker)}/>
       ));
   }
 
   buildMarkerDiv(marker) {
     if (marker.type === 'country-location') {
       return divIcon({
-        className: 'gg-markerSpot bg-primary',
+        className: 'gg-markerSpot bg-primary'
       });
     }
 
@@ -152,7 +152,7 @@ export default class InteractiveMap extends Component {
         mouseover: () => {
           layer.setStyle(defaultHighlightStyle);
         },
-        mouseout: () => resetLayerStyle(layer),
+        mouseout: () => resetLayerStyle(layer)
       });
     }
 

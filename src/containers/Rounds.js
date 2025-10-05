@@ -14,7 +14,7 @@ const mapStateToProps = ({game}) => {
   const answersCount = game.answers.length;
   return {
     round: (answersCount === questionCount ? answersCount : answersCount + 1).toString(),
-    total: questionCount.toString(),
+    total: questionCount.toString()
   };
 };
 

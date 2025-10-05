@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, Suspense} from 'react';
 import {connect} from 'react-redux';
-import {getActiveLanguage, getTranslate} from 'react-localize-redux';
+import { withTranslation } from 'react-i18next';
 
 import * as gameActions from '../actions/gameActions';
 import {hideHelp, showHelp} from '../actions/profileActions';
@@ -20,16 +20,16 @@ import {colors, gameConfig, gameModes, gameStatus} from '../constants';
 class GameScreen extends Component {
 
   componentDidMount() {
-    const {area, gameMode, loadGame, currentLocale} = this.props;
-    loadGame(currentLocale, area, gameMode, gameConfig.rounds);
+    const {area, gameMode, loadGame, i18n} = this.props;
+    loadGame(i18n.language, area, gameMode, gameConfig.rounds);
   }
 
   componentWillUnmount() {
     this.stopGame();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.status === gameStatus.stopped && !this.props.profile.showHelp && this.isGameReady()) {
+  componentDidUpdate(prevProps) {
+    if (this.props.status === gameStatus.stopped && !this.props.profile.showHelp && this.isGameReady()) {
       // start the game automatically if the user deactivated the help dialog
       this.props.startGame();
     }
@@ -37,15 +37,15 @@ class GameScreen extends Component {
 
   render() {
     const {
-        translate, currentLocale,
-        status, questions, answers, mode,
-        restartGame,
-        duration, timeout
-      } = this.props,
-      redirectToHomeScreen = () => {
-        this.stopGame();
-        this.props.history.push(`/${currentLocale}`);
-      };
+      t, i18n,
+      status, questions, answers, mode,
+      restartGame,
+      duration, timeout
+    } = this.props;
+    const redirectToHomeScreen = () => {
+      this.stopGame();
+      this.props.history.push(`/${i18n.language}`);
+    };
 
     // TODO add error handling
     if (!this.isGameReady()) {
@@ -55,58 +55,60 @@ class GameScreen extends Component {
     const question = questions[answers.length] || {};
     const questionToDisplay = mode === gameModes.quiz ? question.question : question.display;
     const translations = {
-        close: translate('actions.close'),
-        restart: translate('actions.restart')
-      };
+      close: t('actions.close'),
+      restart: t('actions.restart')
+    };
 
     return (
-      <div className="container-fluid h-100">
-        {this.getGettingStartedModal()}
+      <Suspense fallback={<Loader/>}>
+        <div className="container-fluid h-100">
+          {this.getGettingStartedModal()}
 
-        <div className="row h-100 no-gutters">
+          <div className="row h-100 no-gutters">
 
-          <aside className="col-md-2 h-100 pt-3 pb-3 pr-3 d-none d-md-block">
-            <div className="gg-aside-content h-100">
-              <div className="gg-aside-header mb-2">
-                <ScoresTable/>
-              </div>
-              {mode !== gameModes.quiz && (
-                <div className="gg-aside-body">
-                  <QuestionList questions={questions}
-                                answers={answers}
-                                isImg={mode === gameModes.flag}/>
+            <aside className="col-md-2 h-100 pt-3 pb-3 pr-3 d-none d-md-block">
+              <div className="gg-aside-content h-100">
+                <div className="gg-aside-header mb-2">
+                  <ScoresTable/>
                 </div>
-              )}
+                {mode !== gameModes.quiz && (
+                  <div className="gg-aside-body">
+                    <QuestionList questions={questions}
+                      answers={answers}
+                      isImg={mode === gameModes.flag}/>
+                  </div>
+                )}
+              </div>
+            </aside>
+
+            <div className="col-md-10 h-100 pt-3 pb-2">
+              <header className="gg-main-header mb-2 bg-light">
+                <GameHeader status={status}
+                  question={questionToDisplay}
+                  timerColor={timeout < duration * 0.25 ? colors.redError : colors.greenOk}
+                  animateTimer={timeout <= 3 || timeout === duration}
+                  flagMode={mode === gameModes.flag}
+                  restartGame={restartGame}
+                  translations={translations}
+                  returnHomeScreen={redirectToHomeScreen}/>
+              </header>
+
+              <div className="gg-main-body pb-2">
+                {mode === gameModes.quiz ? (
+                  <Quiz question={question} onAnswer={this.props.answerCurrentQuestion}/>
+                ) : (
+                  <GameMap/>
+                )}
+              </div>
+
+              <footer className="gg-main-footer d-md-none">
+                <ScoresTable/>
+              </footer>
             </div>
-          </aside>
 
-          <div className="col-md-10 h-100 pt-3 pb-2">
-            <header className="gg-main-header mb-2 bg-light">
-              <GameHeader status={status}
-                          question={questionToDisplay}
-                          timerColor={timeout < duration * 0.25 ? colors.redError : colors.greenOk}
-                          animateTimer={timeout <= 3 || timeout === duration}
-                          flagMode={mode === gameModes.flag}
-                          restartGame={restartGame}
-                          translations={translations}
-                          returnHomeScreen={redirectToHomeScreen}/>
-            </header>
-
-            <div className="gg-main-body pb-2">
-              {mode === gameModes.quiz ? (
-                <Quiz question={question} onAnswer={this.props.answerCurrentQuestion}/>
-              ) : (
-                <GameMap/>
-              )}
-            </div>
-
-            <footer className="gg-main-footer d-md-none">
-              <ScoresTable/>
-            </footer>
           </div>
-
         </div>
-      </div>
+      </Suspense>
     );
   }
 
@@ -124,20 +126,20 @@ class GameScreen extends Component {
   }
 
   getGettingStartedModal() {
-    const {translate, profile} = this.props,
-      listLen = parseInt(translate('gettingStarted.list.length'), 10),
+    const {t, profile} = this.props,
+      listLen = parseInt(t('gettingStarted.list.length'), 10),
       content = {
-        title: translate('gettingStarted.title'),
-        intro: translate('gettingStarted.intro'),
-        info: translate('gettingStarted.info'),
+        title: t('gettingStarted.title'),
+        intro: t('gettingStarted.intro'),
+        info: t('gettingStarted.info'),
         infoList: [],
-        play: translate('actions.play'),
-        doNotShowAgain: translate('gettingStarted.doNotShowAgain'),
+        play: t('actions.play'),
+        doNotShowAgain: t('gettingStarted.doNotShowAgain')
       };
 
     // IMPR build localization lib instead of this hack
     for (let i = 0; i < listLen; i++) {
-      const text = translate(`gettingStarted.list.items.${i}`).split(':');
+      const text = t(`gettingStarted.list.items.${i}`).split(':');
 
       content.infoList.push({
         where: text[0],
@@ -147,8 +149,8 @@ class GameScreen extends Component {
     }
 
     return (<GettingStartedModal show={profile.showHelp}
-                                 content={content}
-                                 onPlayClick={this.onPlayClick.bind(this)}/>);
+      content={content}
+      onPlayClick={this.onPlayClick.bind(this)}/>);
   }
 
   onPlayClick(showHelpOnGameStart) {
@@ -164,8 +166,6 @@ const mapStateToProps = state => {
     {duration, timeout} = state.timer;
 
   return {
-    translate: getTranslate(state.locale),
-    currentLocale: getActiveLanguage(state.locale).code,
     status, questions, answers, mode,
     countriesData,
     mapLoading: loading, error,
@@ -197,7 +197,7 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-export default connect(
+export default withTranslation()(connect(
   mapStateToProps,
   mapDispatchToProps
-)(GameScreen);
+)(GameScreen));

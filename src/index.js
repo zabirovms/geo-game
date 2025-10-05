@@ -8,6 +8,7 @@ import {Provider} from 'react-redux';
 
 import App from './containers/App';
 import store from './store';
+import './i18n';
 
 render(
   <Provider store={store}>

@@ -1,15 +1,13 @@
 import {Component} from 'react';
 import {connect} from 'react-redux';
-
 import {withRouter} from 'react-router-dom';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 import {gaTrackingId, NODE_ENV_PRODUCTION} from '../constants';
 
 if (NODE_ENV_PRODUCTION) {
   ReactGA.initialize(gaTrackingId);
 }
-
 
 class GoogleAnalytics extends Component {
 
@@ -22,8 +20,7 @@ class GoogleAnalytics extends Component {
       return;
     }
 
-    ReactGA.set({page: page});
-    ReactGA.pageview(page);
+    ReactGA.send({ hitType: 'pageview', page: page });
   }
 
   componentDidMount() {

@@ -21,11 +21,11 @@ export default props => (
               {[
                 'countryName',
                 'capital',
-                'flag',
+                'flag'
               ].map(mode => (
                 <div className="mt-1 mb-2" key={mode}>
                   <Link className="btn btn-outline-primary"
-                        to={`/${props.selectedLocale}/${i.id}/${mode}`}>{props.modes[mode]}</Link>
+                    to={`/${props.selectedLocale}/${i.id}/${mode}`}>{props.modes[mode]}</Link>
                 </div>
               ))}
             </div>

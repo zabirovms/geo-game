@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {MdAvTimer, MdClose, MdReplay} from 'react-icons/lib/md';
+import {MdAvTimer, MdClose, MdReplay} from 'react-icons/md';
 
 import Timer from '../../../containers/Timer';
 import Rounds from '../../../containers/Rounds';
@@ -33,13 +33,13 @@ export default class GameHeader extends Component {
 
     return (
       <div className={`d-flex no-gutters align-items-center py-1 ${isGameStarted ? '' : 'justify-content-end'}`}
-           ref={elt => {
-             this.headerElt = elt;
-           }}>
+        ref={elt => {
+          this.headerElt = elt;
+        }}>
         {isGameStarted ? this.renderGameHeader() : this.renderEndGameHeader()}
         <div className="col-auto gg-gameHeader-close pl-1 pr-2 pr-md-3"
-             title={translations.close}
-             onClick={returnHomeScreen}><MdClose/></div>
+          title={translations.close}
+          onClick={returnHomeScreen}><MdClose/></div>
       </div>
     );
   }
@@ -98,44 +98,44 @@ export default class GameHeader extends Component {
     };
 
     switch (this.state.timerAnimation) {
-      case 'evaluate':
-        timerStyles = {
-          ...timerStyles,
-          opacity: 0
-        };
-        break;
-      case 'forward':
-        const
-          headerRect = this.headerElt.getBoundingClientRect(),
-          labelRect = this.timerElt.getBoundingClientRect();
+    case 'evaluate':
+      timerStyles = {
+        ...timerStyles,
+        opacity: 0
+      };
+      break;
+    case 'forward':
+      const
+        headerRect = this.headerElt.getBoundingClientRect(),
+        labelRect = this.timerElt.getBoundingClientRect();
 
-        timerStyles = {
-          ...timerStyles,
-          top: `${(window.innerHeight - labelRect.height) / 2 - labelRect.top}px`,
-          left: `${(headerRect.width - labelRect.width - (labelRect.left - headerRect.left)) / 2}px`,
-          opacity: 0.7
-        };
-        break;
-      default:
-        timerStyles = {
-          ...timerStyles,
-          fontSize: undefined,
-          top: 0,
-          left: 24 + 'px' // width of the icon beside
-        };
+      timerStyles = {
+        ...timerStyles,
+        top: `${(window.innerHeight - labelRect.height) / 2 - labelRect.top}px`,
+        left: `${(headerRect.width - labelRect.width - (labelRect.left - headerRect.left)) / 2}px`,
+        opacity: 0.7
+      };
+      break;
+    default:
+      timerStyles = {
+        ...timerStyles,
+        fontSize: undefined,
+        top: 0,
+        left: 24 + 'px' // width of the icon beside
+      };
     }
 
     return (
       <div className={`${flagMode ? 'col-auto' : 'col-sm-12'} gg-gameHeader-timer`}>
         <div className="gg-gameHeader-icon"
-             style={{color: timerStyles.color}}><MdAvTimer/>
+          style={{color: timerStyles.color}}><MdAvTimer/>
         </div>
         <div className="gg-gameHeader-timerLabel"
-             data-animate={this.state.timerAnimation === 'back'}
-             ref={elt => {
-               this.timerElt = elt;
-             }}
-             style={timerStyles}>
+          data-animate={this.state.timerAnimation === 'back'}
+          ref={elt => {
+            this.timerElt = elt;
+          }}
+          style={timerStyles}>
           <Timer/></div>
       </div>
     );
@@ -150,7 +150,7 @@ export default class GameHeader extends Component {
 
     return props.flagMode
       ? (<div className="gg-gameHeader-flag"
-              style={{backgroundImage: `url(${props.question})`}}/>)
+        style={{backgroundImage: `url(${props.question})`}}/>)
       : (
         <div className="gg-gameHeader-question h2 m-0 gg-text-no-overflow">
           <SimpleText text={props.question}/>

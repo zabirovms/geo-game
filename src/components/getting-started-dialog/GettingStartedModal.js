@@ -16,8 +16,8 @@ export default props => {
           : <div>
             <RememberCheckbox label={props.content.doNotShowAgain} onChange={val => showHelpOnGameStart = !val}/>
             <button type="button"
-                    className="btn btn-primary ml-2"
-                    onClick={() => props.onPlayClick(showHelpOnGameStart)}>
+              className="btn btn-primary ml-2"
+              onClick={() => props.onPlayClick(showHelpOnGameStart)}>
               {props.content.play}
             </button>
           </div>

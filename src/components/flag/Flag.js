@@ -6,11 +6,11 @@ export default props => {
   const classNames = ['gg-flag'];
 
   if (props.className) {
-    classNames.push(props.className)
+    classNames.push(props.className);
   }
   return (
     <img className={'gg-flag'}
-         alt="country flag"
-         src={props.path}/>
+      alt="country flag"
+      src={props.path}/>
   );
 };

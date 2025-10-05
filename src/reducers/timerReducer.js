@@ -32,5 +32,5 @@ export default mapActionToReducer({
   [Timer.START]: start,
   [Timer.STOP]: stop,
   [Timer.RESET]: reset,
-  [Timer.DECREMENT]: decrement,
+  [Timer.DECREMENT]: decrement
 }, defaultState);

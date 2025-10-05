@@ -12,7 +12,7 @@ class App extends Component {
         <div className="App h-100">
           <GoogleAnalytics/>
           <Route path="/:locale?"
-                 component={LocalizedRoute}/>
+            component={LocalizedRoute}/>
         </div>
       </Router>
     );

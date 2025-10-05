@@ -16,14 +16,14 @@ export default class Facebook extends _BaseSocialNetworkComponent {
     return (
       <div className="gg-facebook">
         <div className="fb-like p-1"
-             data-href={props.url}
-             data-layout={props.layout}
-             data-action="like"
-             data-show-faces={props.show_faces}>
+          data-href={props.url}
+          data-layout={props.layout}
+          data-action="like"
+          data-show-faces={props.show_faces}>
         </div>
         <div className="fb-share-button p-1"
-             data-href={props.url}
-             data-layout={props.layout}>
+          data-href={props.url}
+          data-layout={props.layout}>
         </div>
       </div>
     );

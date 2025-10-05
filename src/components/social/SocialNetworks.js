@@ -11,10 +11,10 @@ export default props => {
     <div className="gg-socialNetworks">
       <div className="gg-socialNetworks-item h-100">
         <Facebook url={window.location.href}
-                  locale={props.locale}
-                  share={true}
-                  show_faces={true}
-                  layout={'button_count'}/>
+          locale={props.locale}
+          share={true}
+          show_faces={true}
+          layout={'button_count'}/>
       </div>
       <div className="gg-socialNetworks-item h-100">
         <GooglePlus locale={props.locale}/>

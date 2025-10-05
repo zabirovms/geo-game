@@ -3,7 +3,7 @@ import en from '../locales/ui/en';
 export const supportedGameLocales = Object.freeze([
   {code: 'en', name: 'English'},
   {code: 'ru', name: 'русский'},
-  {code: 'tg', name: 'тоҷикӣ'},
+  {code: 'tg', name: 'тоҷикӣ'}
 ]);
 
 export const supportedGameLocalesByCode = Object.freeze(
