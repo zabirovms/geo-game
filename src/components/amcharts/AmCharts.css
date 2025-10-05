@@ -1,0 +1,10 @@
+.maps-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+#chartdiv1, #chartdiv2 {
+  width: 45%;
+  height: 500px;
+}

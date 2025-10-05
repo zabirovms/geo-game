@@ -10,6 +10,9 @@ import Header from '../components/start-screen/header/Header';
 import AreaList from '../components/start-screen/area-list/AreaList';
 import PageFooter from '../components/page-footer/PageFooter';
 import LocaleSelect from '../components/start-screen/locale-select/LocaleSelect';
+import ZoomingMap from '../components/amcharts/ZoomingMap';
+import RotatingGlobe from '../components/amcharts/RotatingGlobe';
+import '../components/amcharts/AmCharts.css';
 
 class StartScreen extends Component {
 
@@ -32,6 +35,10 @@ class StartScreen extends Component {
           <LocaleSelect locales={supportedGameLocales} selectedLocale={selectedLocale}/>
         </Header>
         <AreaList items={localizedAreas} modes={localizedModes} selectedLocale={selectedLocale}/>
+        <div className="maps-container">
+          <ZoomingMap />
+          <RotatingGlobe />
+        </div>
         <PageFooter locale={locale} items={footerItems.map(item => ({
           text: item.text || translate(`footer.${item.id}`),
           url: item.url
