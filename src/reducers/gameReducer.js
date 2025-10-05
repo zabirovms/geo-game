@@ -1,7 +1,7 @@
 import {mapActionToReducer} from './_utils';
 
 import {Game} from '../actionTypes';
-import {gameStatus} from '../constants';
+import {gameStatus, gameModes} from '../constants';
 
 const defaultGameState = {
     status: gameStatus.stopped,
@@ -39,7 +39,14 @@ const defaultGameState = {
       return state;
     }
 
-    const isCorrect = answer !== undefined && answer === questions[answers.length].display;
+    const currentQuestion = questions[answers.length];
+    let isCorrect;
+
+    if (state.mode === gameModes.quiz) {
+      isCorrect = answer !== undefined && answer === currentQuestion.correctAnswer;
+    } else {
+      isCorrect = answer !== undefined && answer === currentQuestion.display;
+    }
 
     return {
       ...state,

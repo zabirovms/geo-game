@@ -18,7 +18,8 @@ class StartScreen extends Component {
       localizedModes = {
         countryName: translate('modes.country-name'),
         capital: translate('modes.capital'),
-        flag: translate('modes.flag')
+        flag: translate('modes.flag'),
+        quiz: translate('modes.quiz')
       },
       localizedAreas = areas.map(area => ({id: area, label: translate(`continents.${area}`)}));
 

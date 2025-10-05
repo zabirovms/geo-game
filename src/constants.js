@@ -18,7 +18,8 @@ export const gameStatus = {
 export const gameModes = {
   countryName: 'name',
   flag: 'flag',
-  capital: 'capital'
+  capital: 'capital',
+  quiz: 'quiz'
 };
 
 export const mapConfig = {

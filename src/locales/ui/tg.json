@@ -7,7 +7,8 @@
   "modes": {
     "country-name": "Номи Кишвар",
     "capital": "Пойтахт",
-    "flag": "Парчам"
+    "flag": "Парчам",
+    "quiz": "Викторина"
   },
   "continents": {
     "africa": "Африқо",

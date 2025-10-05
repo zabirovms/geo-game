@@ -7,8 +7,17 @@ import * as mapActions from './mapActions';
 
 import {colors, gameModes} from '../constants';
 
-const buildQuestionList = (countries, mode, count) => {
-    const listOfCountries = countries.features.map(f => f.properties),
+const buildQuestionList = (data, mode, count) => {
+    if (mode === gameModes.quiz) {
+      let allQuestions = [];
+      data.categories.forEach(category => {
+        allQuestions = allQuestions.concat(category.questions);
+      });
+      const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
+
+    const listOfCountries = data.features.map(f => f.properties),
       len = listOfCountries.length,
       questionByFeatureId = {};
 
@@ -23,8 +32,6 @@ const buildQuestionList = (countries, mode, count) => {
         {id, name, capital, flag} = country,
         display = getValueByGameMode(country, mode);
 
-      // prevent duplicates and empty values
-      // some capitals may not be defined on the data set
       if (!display || questionByFeatureId[id] !== undefined) {
         continue;
       }
@@ -75,18 +82,22 @@ export const stopGame = () => dispatch => {
 
 export const showResults = () => (dispatch, getState) => {
   const state = getState(),
-    gameState = state.game,
-    colorsByName = gameState.questions.reduce((res, question, index) => {
+    gameState = state.game;
+
+  dispatch(timerActions.stop());
+  dispatch({type: Game.RESULTS});
+
+  if (gameState.mode === gameModes.quiz) {
+    return;
+  }
+
+  const colorsByName = gameState.questions.reduce((res, question, index) => {
       const answer = gameState.answers[index];
-
       res[question.id] = answer === question.display ? colors.greenOk : colors.redError;
-
       return res;
     }, {});
 
-  dispatch(timerActions.stop());
   dispatch(mapActions.highlightFeatures(colorsByName));
-  dispatch({type: Game.RESULTS});
 
   if (gameState.correct === gameState.questions.length) {
     return;
@@ -98,8 +109,7 @@ export const showResults = () => (dispatch, getState) => {
       id: d.id,
       type: 'error-pin',
       properties: state.map.dataById[d.id].properties
-    }))
-  ;
+    }));
 
   dispatch(mapActions.showMarkers(wrongAnswers));
 };
@@ -108,9 +118,16 @@ export const answerCurrentQuestion = answer => (dispatch, getState) => {
   const gameState = getState().game,
     isLastAnswer = gameState.questions.length === (gameState.answers.length + 1);
 
+  let payload;
+  if (gameState.mode === gameModes.quiz) {
+    payload = answer;
+  } else {
+    payload = answer !== undefined ? getValueByGameMode(answer.properties, gameState.mode) : undefined;
+  }
+
   dispatch({
     type: Game.ANSWER_CURRENT_QUESTION,
-    payload: answer !== undefined ? getValueByGameMode(answer.properties, gameState.mode) : undefined
+    payload
   });
 
   if (isLastAnswer) {

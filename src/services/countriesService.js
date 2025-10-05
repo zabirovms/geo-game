@@ -8,7 +8,8 @@ export const areas = [
   'europe',
   'north-america',
   'oceania',
-  'south-america'
+  'south-america',
+  'quiz'
 ];
 
 const defaultMapZoom = {
@@ -44,6 +45,10 @@ const defaultMapZoom = {
         ...defaultMapZoom
       }
     },
+    'quiz': {
+      center: [0, 0],
+      zoom: defaultMapZoom
+    }
   };
 
 export const isAreaIdValid = id => areas.indexOf(id) !== -1;

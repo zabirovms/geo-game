@@ -12,6 +12,8 @@ import Loader from '../components/common/Loader';
 import GettingStartedModal from '../components/getting-started-dialog/GettingStartedModal';
 
 import GameMap from './GameMap';
+import Quiz from '../components/quiz/Quiz';
+import '../components/quiz/_quiz.css';
 
 import {colors, gameConfig, gameModes, gameStatus} from '../constants';
 
@@ -50,8 +52,9 @@ class GameScreen extends Component {
       return <Loader/>;
     }
 
-    const question = questions[answers.length] || {},
-      translations = {
+    const question = questions[answers.length] || {};
+    const questionToDisplay = mode === gameModes.quiz ? question.question : question.display;
+    const translations = {
         close: translate('actions.close'),
         restart: translate('actions.restart')
       };
@@ -67,18 +70,20 @@ class GameScreen extends Component {
               <div className="gg-aside-header mb-2">
                 <ScoresTable/>
               </div>
-              <div className="gg-aside-body">
-                <QuestionList questions={questions}
-                              answers={answers}
-                              isImg={mode === gameModes.flag}/>
-              </div>
+              {mode !== gameModes.quiz && (
+                <div className="gg-aside-body">
+                  <QuestionList questions={questions}
+                                answers={answers}
+                                isImg={mode === gameModes.flag}/>
+                </div>
+              )}
             </div>
           </aside>
 
           <div className="col-md-10 h-100 pt-3 pb-2">
             <header className="gg-main-header mb-2 bg-light">
               <GameHeader status={status}
-                          question={question.display}
+                          question={questionToDisplay}
                           timerColor={timeout < duration * 0.25 ? colors.redError : colors.greenOk}
                           animateTimer={timeout <= 3 || timeout === duration}
                           flagMode={mode === gameModes.flag}
@@ -87,7 +92,13 @@ class GameScreen extends Component {
                           returnHomeScreen={redirectToHomeScreen}/>
             </header>
 
-            <div className="gg-main-body pb-2"><GameMap/></div>
+            <div className="gg-main-body pb-2">
+              {mode === gameModes.quiz ? (
+                <Quiz question={question} onAnswer={this.props.answerCurrentQuestion}/>
+              ) : (
+                <GameMap/>
+              )}
+            </div>
 
             <footer className="gg-main-footer d-md-none">
               <ScoresTable/>
@@ -174,6 +185,9 @@ const mapDispatchToProps = dispatch => ({
   },
   stopGame: () => {
     dispatch(gameActions.stopGame());
+  },
+  answerCurrentQuestion: answer => {
+    dispatch(gameActions.answerCurrentQuestion(answer));
   },
   showHelp: () => {
     dispatch(showHelp());

@@ -1,8 +1,11 @@
 import {Map} from '../actionTypes';
-import {fetchData} from '../services/countriesService';
+import {fetchData as fetchCountriesData} from '../services/countriesService';
+import {fetchData as fetchQuizData} from '../services/quizService';
 
 export const load = (locale, id) => dispatch => {
   dispatch({type: Map.FETCH_DATA, payload: {locale, id}});
+
+  const fetchData = id === 'quiz' ? fetchQuizData : fetchCountriesData;
 
   return fetchData(locale, id)
     .then(data => {
