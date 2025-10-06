@@ -6,11 +6,13 @@ import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
 class RotatingGlobe extends Component {
   componentDidMount() {
-    let root = am5.Root.new(this.chartDiv);
+    let root = am5.Root.new("globe-chartdiv");
 
     root.setThemes([
       am5themes_Animated.new(root)
     ]);
+
+    root._logo.dispose();
 
     let chart = root.container.children.push(am5map.MapChart.new(root, {
       panX: "rotateX",
@@ -98,7 +100,7 @@ class RotatingGlobe extends Component {
       <div>
         <h4 className="text-center mb-3">3D Rotating Globe - Click to Center</h4>
         <div 
-          ref={el => this.chartDiv = el} 
+          id="globe-chartdiv"
           style={{ width: "100%", height: "500px" }}
         />
       </div>
