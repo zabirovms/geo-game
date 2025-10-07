@@ -26,7 +26,7 @@ class LocalizedRoute extends Component {
     props.initializeLocalization();
 
     this.state = {
-      currentLocale: undefined
+      currentLocale: props.match && props.match.params && props.match.params.locale
     };
   }
 
@@ -60,7 +60,7 @@ class LocalizedRoute extends Component {
       return <Redirect to={`/${getBestMatchingLocale()}`}/>;
     }
 
-    if (this.state.currentLocale === undefined) {
+    if (!this.state.currentLocale) {
       return <Loader/>;
     }
 
