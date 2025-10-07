@@ -11,6 +11,14 @@ This is an interactive geography learning game built with React. Users can test 
 - **Languages Supported:** English, Russian, Tajik
 
 ## Recent Changes
+- **2025-10-07:** Modernized UI with contemporary design
+  - Implemented modern color scheme using CSS custom properties (purple-to-pink gradients)
+  - Updated header with gradient background and enhanced typography
+  - Redesigned language selector with card-based design and glassmorphism effects
+  - Enhanced map section with card layouts, shadows, and hover transitions
+  - Improved continent selection with modern card styling and responsive buttons
+  - All components maintain full navigation functionality while featuring modern visuals
+  - Architect-approved implementation with no regressions
 - **2025-10-07:** Fixed map rendering issue
   - Migrated from amCharts 5 to amCharts 4 for compatibility with React 15.6.2 and webpack 2
   - Rewrote ZoomableWorldMap component to use amCharts 4 API
