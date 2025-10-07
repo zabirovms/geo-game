@@ -6,10 +6,8 @@ import {footerItems, locale} from '../constants';
 import {supportedGameLocales} from '../services/localizationService';
 import {areas} from '../services/countriesService';
 
-import Header from '../components/start-screen/header/Header';
 import AreaList from '../components/start-screen/area-list/AreaList';
 import PageFooter from '../components/page-footer/PageFooter';
-import LocaleSelect from '../components/start-screen/locale-select/LocaleSelect';
 import ZoomableWorldMap from '../components/learning-maps/ZoomableWorldMap';
 import RotatingGlobe from '../components/learning-maps/RotatingGlobe';
 
@@ -26,20 +24,14 @@ class StartScreen extends Component {
 
     return (
       <div className="container">
-        <Header
-          title={translate('header.title')}
-          subTitle={translate('header.sub-title')}
-          description={translate('header.description')}>
-          <LocaleSelect locales={supportedGameLocales} selectedLocale={selectedLocale}/>
-        </Header>
-        
+        <div className="mb-4"/>
         <div className="mb-5">
           <h3 className="text-center mb-4" style={{
             color: '#6366f1',
             fontWeight: '800',
             fontSize: '2rem',
             marginBottom: '2.5rem'
-          }}>Explore the World - Learning Tools</h3>
+          }}>{translate('header.title')}</h3>
           <div className="row">
             <div className="col-md-6 mb-4">
               <div className="map-card">

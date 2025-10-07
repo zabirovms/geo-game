@@ -32,18 +32,21 @@ class LocalizedRoute extends Component {
 
   componentDidMount() {
     this.props.loadProfile('unknown');
+    this.setLocale(this.props.match.params.locale);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setLocale(nextProps.match.params.locale);
+  componentDidUpdate(prevProps) {
+    const prevLocale = prevProps.match.params.locale;
+    const nextLocale = this.props.match.params.locale;
+    if (prevLocale !== nextLocale) {
+      this.setLocale(nextLocale);
+    }
   }
 
   setLocale(locale) {
     if (locale && locale !== this.state.currentLocale && isLocaleSupported(locale)) {
       this.props.setLocale(locale)
         .then(() => {
-          // only set the locale after it is loaded
-          // fix for game loading in en after page refresh
           this.setState(() => ({currentLocale: locale}));
         });
     }
