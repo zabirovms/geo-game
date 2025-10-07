@@ -1,0 +1,16 @@
+[variables]
+CI = "false"
+GENERATE_SOURCEMAP = "false"
+NODE_OPTIONS = "--max_old_space_size=1024"
+
+[phases.install]
+cmds = [
+  "npm install --no-audit --no-fund --legacy-peer-deps"
+]
+
+[phases.build]
+# Ensure CRA uses modern minifier and skips lint in prod
+env = { CI = "false", GENERATE_SOURCEMAP = "false", DISABLE_ESLINT_PLUGIN = "true" }
+
+[start]
+cmd = "npx serve -s build -l $PORT --single"
