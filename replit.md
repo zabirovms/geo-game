@@ -11,6 +11,11 @@ This is an interactive geography learning game built with React. Users can test 
 - **Languages Supported:** English, Russian, Tajik
 
 ## Recent Changes
+- **2025-10-07:** Fixed map rendering issue
+  - Migrated from amCharts 5 to amCharts 4 for compatibility with React 15.6.2 and webpack 2
+  - Rewrote ZoomableWorldMap component to use amCharts 4 API
+  - Rewrote RotatingGlobe component to use amCharts 4 API
+  - Both interactive maps now render correctly on the start screen without console errors
 - **2025-10-06:** Initial Replit setup completed
   - Installed all npm dependencies
   - Configured development server for Replit proxy (HOST=0.0.0.0, DANGEROUSLY_DISABLE_HOST_CHECK=true)
@@ -30,7 +35,7 @@ This is an interactive geography learning game built with React. Users can test 
   - **services/**: Business logic and data services
 
 ### Key Features
-- Interactive maps using Leaflet and react-leaflet
+- Interactive maps using amCharts 4, Leaflet, and react-leaflet
 - Redux state management with redux-thunk for async actions
 - React Router for navigation
 - Multi-language support via react-localize-redux
