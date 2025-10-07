@@ -28,20 +28,29 @@ class StartScreen extends Component {
       <div className="container">
         <Header
           title={translate('header.title')}
-          sub-title={translate('header.sub-title')}
+          subTitle={translate('header.sub-title')}
           description={translate('header.description')}>
           <LocaleSelect locales={supportedGameLocales} selectedLocale={selectedLocale}/>
         </Header>
         
-        <div className="row mb-5">
-          <div className="col-12">
-            <h3 className="text-center mb-4">Explore the World - Learning Tools</h3>
-          </div>
-          <div className="col-md-6 mb-4">
-            <ZoomableWorldMap />
-          </div>
-          <div className="col-md-6 mb-4">
-            <RotatingGlobe />
+        <div className="mb-5">
+          <h3 className="text-center mb-4" style={{
+            color: '#6366f1',
+            fontWeight: '800',
+            fontSize: '2rem',
+            marginBottom: '2.5rem'
+          }}>Explore the World - Learning Tools</h3>
+          <div className="row">
+            <div className="col-md-6 mb-4">
+              <div className="map-card">
+                <ZoomableWorldMap />
+              </div>
+            </div>
+            <div className="col-md-6 mb-4">
+              <div className="map-card">
+                <RotatingGlobe />
+              </div>
+            </div>
           </div>
         </div>
 

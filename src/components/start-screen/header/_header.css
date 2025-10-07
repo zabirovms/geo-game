@@ -1,10 +1,27 @@
 .gg-header-title {
-  font-size: 2rem;
-  font-weight: 300;
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 400;
+  opacity: 0.95;
+  line-height: 1.6;
 }
 
 @media (min-width: 768px) {
   .gg-header-title {
-    font-size: 3.2rem;
+    font-size: 3.5rem;
+  }
+  
+  .lead {
+    font-size: 1.4rem;
   }
 }

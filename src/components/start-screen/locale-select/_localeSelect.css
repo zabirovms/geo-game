@@ -1,7 +1,40 @@
 .gg-localeSelect {
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
 
-  max-height: 150px;
-  overflow-y: auto;
+.gg-localeSelect .btn {
+  flex: 1;
+  min-width: 150px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.gg-localeSelect .btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gg-localeSelect .btn.active,
+.gg-localeSelect .btn-primary {
+  background: white;
+  color: #6366f1;
+  border-color: white;
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+}
+
+.gg-localeSelect .btn.active:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
 }

@@ -1,33 +1,72 @@
 .gg-area {
   position: relative;
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.gg-area:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+
+.gg-area h3 {
+  color: #6366f1;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
 }
 
 .gg-area-buttons {
   z-index: 1;
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.gg-area-buttons .btn {
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 120px;
 }
 
 .gg-area-icon {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  max-width: 100%;
+  right: 20px;
+  bottom: 20px;
+  height: 120px;
+  max-width: 40%;
   z-index: 0;
-  opacity: .4;
+  opacity: 0.08;
   text-align: right;
 }
 
 .gg-area-icon svg {
   height: 100%;
+  fill: #6366f1;
 }
 
 @media (min-width: 540px) {
   .gg-area-icon {
-    position: relative;
-    opacity: 1;
+    opacity: 0.12;
+    height: 150px;
   }
+}
 
-  .gg-area-icon svg {
-    height: auto;
+@media (min-width: 768px) {
+  .gg-area {
+    padding: 2.5rem;
+  }
+  
+  .gg-area-buttons {
+    gap: 1rem;
   }
 }
