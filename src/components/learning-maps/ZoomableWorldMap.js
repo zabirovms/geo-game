@@ -1,74 +1,37 @@
 import React, { Component } from 'react';
-import * as am5 from "@amcharts/amcharts5";
-import * as am5map from "@amcharts/amcharts5/map";
-import am5geodata_worldLow from "@amcharts/amcharts5-geodata/worldLow";
-import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import * as am4core from "@amcharts/amcharts4/core";
+import * as am4maps from "@amcharts/amcharts4/maps";
+import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+
+am4core.useTheme(am4themes_animated);
 
 class ZoomableWorldMap extends Component {
   componentDidMount() {
-    let root = am5.Root.new("zoomable-chartdiv");
-
-    root.setThemes([
-      am5themes_Animated.new(root)
-    ]);
-
-    root._logo.dispose();
-
-    let chart = root.container.children.push(am5map.MapChart.new(root, {
-      panX: "translateX",
-      panY: "translateY",
-      projection: am5map.geoMercator()
-    }));
-
-    let polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-      geoJSON: am5geodata_worldLow,
-      exclude: ["AQ"]
-    }));
-
-    polygonSeries.mapPolygons.template.setAll({
-      tooltipText: "{name}",
-      toggleKey: "active",
-      interactive: true
-    });
-
-    polygonSeries.mapPolygons.template.states.create("hover", {
-      fill: am5.color(0x297373)
-    });
-
-    polygonSeries.mapPolygons.template.states.create("active", {
-      fill: am5.color(0x297373)
-    });
-
-    let previousPolygon;
-
-    polygonSeries.mapPolygons.template.on("active", function (active, target) {
-      if (previousPolygon && previousPolygon !== target) {
-        previousPolygon.set("active", false);
-      }
-      if (target.get("active")) {
-        let dataItem = target.dataItem;
-        chart.zoomToDataItem(dataItem);
-      } else {
-        chart.goHome();
-      }
-      previousPolygon = target;
-    });
-
-    chart.chartContainer.get("background").events.on("click", function () {
-      chart.goHome();
-      if (previousPolygon) {
-        previousPolygon.set("active", false);
-      }
-    });
-
-    chart.appear(1000, 100);
-
-    this.root = root;
+    let chart = am4core.create("zoomable-chartdiv", am4maps.MapChart);
+    
+    chart.projection = new am4maps.projections.Miller();
+    
+    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    polygonSeries.useGeodata = true;
+    polygonSeries.geodata = am4geodata_worldLow;
+    polygonSeries.exclude = ["AQ"];
+    
+    let polygonTemplate = polygonSeries.mapPolygons.template;
+    polygonTemplate.tooltipText = "{name}";
+    polygonTemplate.fill = am4core.color("#74B266");
+    
+    let hs = polygonTemplate.states.create("hover");
+    hs.properties.fill = am4core.color("#297373");
+    
+    chart.logo.disabled = true;
+    
+    this.chart = chart;
   }
 
   componentWillUnmount() {
-    if (this.root) {
-      this.root.dispose();
+    if (this.chart) {
+      this.chart.dispose();
     }
   }
 
