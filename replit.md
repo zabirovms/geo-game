@@ -20,9 +20,9 @@ This is an interactive geography learning game built with React. Users can test 
   - All components maintain full navigation functionality while featuring modern visuals
   - Architect-approved implementation with no regressions
 - **2025-10-07:** Fixed map rendering issue
-  - Migrated from amCharts 5 to amCharts 4 for compatibility with React 15.6.2 and webpack 2
-  - Rewrote ZoomableWorldMap component to use amCharts 4 API
-  - Rewrote RotatingGlobe component to use amCharts 4 API
+  - Migrated from amCharts 4 to Three.js for better performance and modern 3D graphics
+  - Replaced ZoomableWorldMap component with SimpleWorldMap using SVG
+  - Replaced RotatingGlobe component with ThreeJSGlobe using Three.js
   - Both interactive maps now render correctly on the start screen without console errors
 - **2025-10-06:** Initial Replit setup completed
   - Installed all npm dependencies
@@ -43,7 +43,7 @@ This is an interactive geography learning game built with React. Users can test 
   - **services/**: Business logic and data services
 
 ### Key Features
-- Interactive maps using amCharts 4, Leaflet, and react-leaflet
+- Interactive maps using Three.js, SVG, and react-leaflet
 - Redux state management with redux-thunk for async actions
 - React Router for navigation
 - Multi-language support via react-localize-redux
