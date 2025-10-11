@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {HashRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 import GoogleAnalytics from './GoogleAnalytics';
 import LocalizedRoute from './LocalizedRoute';
@@ -13,8 +13,8 @@ class App extends Component {
         <div className="App h-100">
           <GoogleAnalytics/>
           <TopBar />
-          <Route path="/:locale?"
-                 component={LocalizedRoute}/>
+          <Route path="/"
+            component={LocalizedRoute}/>
         </div>
       </Router>
     );

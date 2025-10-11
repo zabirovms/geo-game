@@ -36,14 +36,14 @@ class GameScreen extends Component {
 
   render() {
     const {
-        translate, currentLocale,
+        translate,
         status, questions, answers, mode,
         restartGame,
         duration, timeout
       } = this.props,
       redirectToHomeScreen = () => {
         this.stopGame();
-        this.props.history.push(`/${currentLocale}`);
+        this.props.history.push('/');
       };
 
     // TODO add error handling

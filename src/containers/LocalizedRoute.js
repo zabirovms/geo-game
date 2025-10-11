@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Redirect, Route} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import {addTranslationForLanguage, initialize, setActiveLanguage} from 'react-localize-redux';
 
 import StartScreen from './StartScreen';
@@ -11,7 +11,6 @@ import {isAreaIdValid} from '../services/countriesService';
 import {
   getBestMatchingLocale,
   getTranslation,
-  isLocaleSupported,
   supportedGameLocales
 } from '../services/localizationService';
 
@@ -31,43 +30,19 @@ class LocalizedRoute extends Component {
   }
 
   componentDidMount() {
-    console.log('LocalizedRoute mounted, locale from URL:', this.props.match.params.locale);
     this.props.loadProfile('unknown');
-    this.setLocale(this.props.match.params.locale);
-  }
-
-  componentDidUpdate(prevProps) {
-    const prevLocale = prevProps.match.params.locale;
-    const nextLocale = this.props.match.params.locale;
-    if (prevLocale !== nextLocale) {
-      this.setLocale(nextLocale);
-    }
-  }
-
-  setLocale(locale) {
-    console.log('setLocale called', {locale, currentLocale: this.state.currentLocale, isSupported: isLocaleSupported(locale)});
-    if (locale && locale !== this.state.currentLocale && isLocaleSupported(locale)) {
-      console.log('Loading translations for:', locale);
-      this.props.setLocale(locale)
-        .then(() => {
-          console.log('Translations loaded successfully for:', locale);
-          this.setState(() => ({currentLocale: locale}));
-        })
-        .catch(err => {
-          console.error('Error loading translations:', err);
-        });
-    } else {
-      console.log('Skipping translation load - condition not met');
-    }
+    const locale = getBestMatchingLocale();
+    this.props.setLocale(locale)
+      .then(() => {
+        this.setState(() => ({currentLocale: locale}));
+      })
+      .catch(err => {
+        console.error('Error loading translations:', err);
+      });
   }
 
   render() {
-    const {match, profile} = this.props,
-      locale = match.params.locale;
-
-    if (!locale || !isLocaleSupported(locale)) {
-      return <Redirect to={`/${getBestMatchingLocale()}`}/>;
-    }
+    const {profile} = this.props;
 
     if (!this.state.currentLocale) {
       return <Loader/>;
@@ -75,26 +50,27 @@ class LocalizedRoute extends Component {
 
     return (
       <div className="h-100">
-        <Route path={`${match.url}/:area/:mode`}
-          render={({match, ...args}) => {
-            const areaId = match.params.area,
-              mode = match.params.mode;
+        <Switch>
+          <Route exact path="/"
+            render={() => <StartScreen selectedLocale={this.state.currentLocale}/>}/>
+          <Route path="/:area/:mode"
+            render={({match, ...args}) => {
+              const areaId = match.params.area,
+                mode = match.params.mode;
 
-            console.log('LocalizedRoute game route check', {
-              areaId,
-              mode,
-              isAreaIdValid: isAreaIdValid(areaId),
-              gameModesDefined: gameModes[mode] !== undefined,
-              gameModes: gameModes
-            });
+              console.log('Game route matched!', {
+                areaId,
+                mode,
+                isAreaValid: isAreaIdValid(areaId),
+                isModeValid: gameModes[mode] !== undefined,
+                gameModes
+              });
 
-            return isAreaIdValid(areaId) && gameModes[mode] !== undefined
-              ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
-              : (<Redirect to={match.url}/>);
-          }}/>
-        <Route exact
-          path={match.url}
-          render={() => <StartScreen selectedLocale={locale}/>}/>
+              return isAreaIdValid(areaId) && gameModes[mode] !== undefined
+                ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
+                : (<Redirect to="/"/>);
+            }}/>
+        </Switch>
       </div>
     );
   }
