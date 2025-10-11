@@ -21,25 +21,31 @@ class StartScreen extends Component {
       localizedAreas = areas.map(area => ({id: area, label: translate(`continents.${area}`)}));
 
     return (
-      <div className="container">
-        <div className="mb-4"/>
+      <div className="container" style={{maxWidth: '1200px'}}>
+        {/* Hero Section */}
+        <section className="hero-section">
+          <h1 className="hero-title">
+            {translate('header.title')}
+          </h1>
+          <p className="hero-subtitle">
+            {translate('header.sub-title')}
+          </p>
+        </section>
+
+        {/* Interactive World Map */}
         <div className="mb-5">
-          <h3 className="text-center mb-4" style={{
-            color: '#6366f1',
-            fontWeight: '800',
-            fontSize: '2rem',
-            marginBottom: '2.5rem'
-          }}>{translate('header.title')}</h3>
-          <div className="row">
-            <div className="col-md-12 mb-4">
-              <div className="map-card">
-                <SimpleWorldMap />
-              </div>
-            </div>
+          <div className="map-card">
+            <h4 style={{textAlign: 'center', marginBottom: '1.5rem'}}>
+              {translate('header.description')}
+            </h4>
+            <SimpleWorldMap />
           </div>
         </div>
 
+        {/* Continent Selection */}
         <AreaList items={localizedAreas} modes={localizedModes} selectedLocale={selectedLocale}/>
+        
+        {/* Footer */}
         <PageFooter locale={locale} items={footerItems.map(item => ({
           text: item.text || translate(`footer.${item.id}`),
           url: item.url

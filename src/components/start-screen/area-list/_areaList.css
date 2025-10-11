@@ -1,41 +1,92 @@
 .gg-area {
   position: relative;
-  background: white;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-xl);
   padding: 2rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-base);
   overflow: hidden;
+  animation: slideUp 0.5s ease;
+}
+
+.gg-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.gg-area:hover::before {
+  opacity: 1;
 }
 
 .gg-area:hover {
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-5px);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .gg-area h3 {
-  color: #6366f1;
-  font-weight: 700;
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
   margin-bottom: 1.5rem;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  position: relative;
+  z-index: 2;
 }
 
 .gg-area-buttons {
-  z-index: 1;
+  z-index: 2;
   position: relative;
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-.gg-area-buttons .btn {
-  border-radius: 10px;
-  padding: 0.6rem 1.2rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
+.gg-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.25rem;
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-base);
   flex: 1;
   min-width: 120px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-color);
+}
+
+.gg-mode-btn .mode-icon {
+  font-size: 1.2rem;
+  transition: transform var(--transition-base);
+}
+
+.gg-mode-btn:hover .mode-icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.gg-mode-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-primary);
+}
+
+.gg-mode-btn:active {
+  transform: translateY(0);
 }
 
 .gg-area-icon {
@@ -45,19 +96,50 @@
   height: 120px;
   max-width: 40%;
   z-index: 0;
-  opacity: 0.08;
+  opacity: 0.1;
   text-align: right;
+  transition: all var(--transition-slow);
+}
+
+.gg-area:hover .gg-area-icon {
+  opacity: 0.15;
+  transform: scale(1.05) rotate(2deg);
 }
 
 .gg-area-icon svg {
   height: 100%;
-  fill: #6366f1;
+  fill: var(--primary-color);
+  filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.2));
 }
 
-@media (min-width: 540px) {
+/* Stagger animation for cards */
+.gg-area:nth-child(1) { animation-delay: 0.1s; }
+.gg-area:nth-child(2) { animation-delay: 0.2s; }
+.gg-area:nth-child(3) { animation-delay: 0.3s; }
+.gg-area:nth-child(4) { animation-delay: 0.4s; }
+.gg-area:nth-child(5) { animation-delay: 0.5s; }
+.gg-area:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive Design */
+@media (max-width: 540px) {
+  .gg-area-buttons {
+    flex-direction: column;
+  }
+  
+  .gg-mode-btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .gg-area-icon {
+    height: 80px;
+  }
+}
+
+@media (min-width: 540px) and (max-width: 767px) {
   .gg-area-icon {
     opacity: 0.12;
-    height: 150px;
+    height: 100px;
   }
 }
 
@@ -68,5 +150,15 @@
   
   .gg-area-buttons {
     gap: 1rem;
+  }
+  
+  .gg-area-icon {
+    height: 150px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gg-area {
+    padding: 2.5rem 3rem;
   }
 }
