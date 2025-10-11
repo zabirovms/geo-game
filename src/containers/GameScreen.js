@@ -19,6 +19,7 @@ class GameScreen extends Component {
 
   componentDidMount() {
     const {area, gameMode, loadGame, currentLocale} = this.props;
+    console.log('GameScreen componentDidMount', {currentLocale, area, gameMode, rounds: gameConfig.rounds});
     loadGame(currentLocale, area, gameMode, gameConfig.rounds);
   }
 
@@ -69,8 +70,8 @@ class GameScreen extends Component {
               </div>
               <div className="gg-aside-body">
                 <QuestionList questions={questions}
-                              answers={answers}
-                              isImg={mode === gameModes.flag}/>
+                  answers={answers}
+                  isImg={mode === gameModes.flag}/>
               </div>
             </div>
           </aside>
@@ -78,13 +79,13 @@ class GameScreen extends Component {
           <div className="col-md-10 h-100 pt-3 pb-2">
             <header className="gg-main-header mb-2 bg-light">
               <GameHeader status={status}
-                          question={question.display}
-                          timerColor={timeout < duration * 0.25 ? colors.redError : colors.greenOk}
-                          animateTimer={timeout <= 3 || timeout === duration}
-                          flagMode={mode === gameModes.flag}
-                          restartGame={restartGame}
-                          translations={translations}
-                          returnHomeScreen={redirectToHomeScreen}/>
+                question={question.display}
+                timerColor={timeout < duration * 0.25 ? colors.redError : colors.greenOk}
+                animateTimer={timeout <= 3 || timeout === duration}
+                flagMode={mode === gameModes.flag}
+                restartGame={restartGame}
+                translations={translations}
+                returnHomeScreen={redirectToHomeScreen}/>
             </header>
 
             <div className="gg-main-body pb-2"><GameMap/></div>
@@ -101,7 +102,14 @@ class GameScreen extends Component {
 
   isGameReady() {
     const props = this.props;
-    return !props.mapLoading && !props.profile.loading && props.countriesData !== undefined;
+    const ready = !props.mapLoading && !props.profile.loading && props.countriesData !== undefined;
+    console.log('isGameReady check', {
+      mapLoading: props.mapLoading,
+      profileLoading: props.profile.loading,
+      hasCountriesData: props.countriesData !== undefined,
+      ready: ready
+    });
+    return ready;
   }
 
   stopGame() {
@@ -121,7 +129,7 @@ class GameScreen extends Component {
         info: translate('gettingStarted.info'),
         infoList: [],
         play: translate('actions.play'),
-        doNotShowAgain: translate('gettingStarted.doNotShowAgain'),
+        doNotShowAgain: translate('gettingStarted.doNotShowAgain')
       };
 
     // IMPR build localization lib instead of this hack
@@ -136,8 +144,8 @@ class GameScreen extends Component {
     }
 
     return (<GettingStartedModal show={profile.showHelp}
-                                 content={content}
-                                 onPlayClick={this.onPlayClick.bind(this)}/>);
+      content={content}
+      onPlayClick={this.onPlayClick.bind(this)}/>);
   }
 
   onPlayClick(showHelpOnGameStart) {

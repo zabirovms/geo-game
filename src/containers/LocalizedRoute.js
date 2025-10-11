@@ -26,11 +26,12 @@ class LocalizedRoute extends Component {
     props.initializeLocalization();
 
     this.state = {
-      currentLocale: props.match && props.match.params && props.match.params.locale
+      currentLocale: null
     };
   }
 
   componentDidMount() {
+    console.log('LocalizedRoute mounted, locale from URL:', this.props.match.params.locale);
     this.props.loadProfile('unknown');
     this.setLocale(this.props.match.params.locale);
   }
@@ -44,11 +45,19 @@ class LocalizedRoute extends Component {
   }
 
   setLocale(locale) {
+    console.log('setLocale called', {locale, currentLocale: this.state.currentLocale, isSupported: isLocaleSupported(locale)});
     if (locale && locale !== this.state.currentLocale && isLocaleSupported(locale)) {
+      console.log('Loading translations for:', locale);
       this.props.setLocale(locale)
         .then(() => {
+          console.log('Translations loaded successfully for:', locale);
           this.setState(() => ({currentLocale: locale}));
+        })
+        .catch(err => {
+          console.error('Error loading translations:', err);
         });
+    } else {
+      console.log('Skipping translation load - condition not met');
     }
   }
 
@@ -67,17 +76,25 @@ class LocalizedRoute extends Component {
     return (
       <div className="h-100">
         <Route path={`${match.url}/:area/:mode`}
-               render={({match, ...args}) => {
-                 const areaId = match.params.area,
-                   mode = match.params.mode;
+          render={({match, ...args}) => {
+            const areaId = match.params.area,
+              mode = match.params.mode;
 
-                 return isAreaIdValid(areaId) && gameModes[mode] !== undefined
-                   ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
-                   : (<Redirect to={match.url}/>);
-               }}/>
+            console.log('LocalizedRoute game route check', {
+              areaId,
+              mode,
+              isAreaIdValid: isAreaIdValid(areaId),
+              gameModesDefined: gameModes[mode] !== undefined,
+              gameModes: gameModes
+            });
+
+            return isAreaIdValid(areaId) && gameModes[mode] !== undefined
+              ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
+              : (<Redirect to={match.url}/>);
+          }}/>
         <Route exact
-               path={match.url}
-               render={() => <StartScreen selectedLocale={locale}/>}/>
+          path={match.url}
+          render={() => <StartScreen selectedLocale={locale}/>}/>
       </div>
     );
   }
