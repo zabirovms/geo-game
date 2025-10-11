@@ -11,6 +11,17 @@ This is an interactive geography learning game built with React. Users can test 
 - **Languages Supported:** English, Russian, Tajik
 
 ## Recent Changes
+- **2025-10-11:** Complete modern redesign with enhanced UX
+  - Implemented comprehensive design system with CSS custom properties (colors, typography, spacing, shadows)
+  - Created hero section with gradient title and engaging subtitle
+  - Transformed continent cards with glass-morphism effects, game mode icons (🌍, 🏛️, 🏴), and stagger animations
+  - Redesigned game screen with modern header, enhanced question display, and improved visual hierarchy
+  - Enhanced country list with hover effects, color-coded feedback (success/error), and smooth transitions
+  - Modernized help modal with bottom-sheet style on mobile, rounded design, and improved UX
+  - Added CSS keyframe animations (fadeIn, slideUp, scaleIn, pulse, shimmer)
+  - Enhanced responsive design with proper mobile, tablet, and desktop breakpoints
+  - Fixed modal visibility bug to preserve Bootstrap's display contract
+  - All features tested and architect-approved with no functional regressions
 - **2025-10-07:** Modernized UI with contemporary design
   - Implemented modern color scheme using CSS custom properties (purple-to-pink gradients)
   - Updated header with gradient background and enhanced typography
