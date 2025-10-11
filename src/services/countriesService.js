@@ -43,7 +43,7 @@ const defaultMapZoom = {
         value: 4,
         ...defaultMapZoom
       }
-    },
+    }
   };
 
 export const isAreaIdValid = id => areas.indexOf(id) !== -1;
@@ -54,7 +54,7 @@ export const fetchData = (locale, id) => {
   }
 
   return Promise.all([
-    fetch(`geo-json/${id}.json`).then(r => r.json()),
+    fetch(`/geo-json/${id}.json`).then(r => r.json()),
     fetchLocalizedData(locale, id)
   ])
     .then(response => {

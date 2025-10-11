@@ -58,14 +58,6 @@ class LocalizedRoute extends Component {
               const areaId = match.params.area,
                 mode = match.params.mode;
 
-              console.log('Game route matched!', {
-                areaId,
-                mode,
-                isAreaValid: isAreaIdValid(areaId),
-                isModeValid: gameModes[mode] !== undefined,
-                gameModes
-              });
-
               return isAreaIdValid(areaId) && gameModes[mode] !== undefined
                 ? (<GameScreen area={areaId} profile={profile} gameMode={mode} {...args}/>)
                 : (<Redirect to="/"/>);
