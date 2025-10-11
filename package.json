@@ -4,10 +4,10 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "three": "^0.160.0",
-    "gsap": "^3.12.2",
     "bootstrap": "^4.0.0",
+    "gsap": "^3.12.2",
     "leaflet": "^1.3.1",
+    "pseudomap": "^1.0.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-ga": "^2.4.1",
@@ -19,7 +19,8 @@
     "react-scripts": "5.0.1",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "2.2.0"
+    "redux-thunk": "2.2.0",
+    "three": "^0.160.0"
   },
   "scripts": {
     "start": "react-scripts start",
