@@ -1,5 +1,3 @@
-/* globals fetch */
-
 import {fetchData as fetchLocalizedData} from './localizationService';
 
 export const areas = [
@@ -43,7 +41,7 @@ const defaultMapZoom = {
         value: 4,
         ...defaultMapZoom
       }
-    },
+    }
   };
 
 export const isAreaIdValid = id => areas.indexOf(id) !== -1;
@@ -53,28 +51,15 @@ export const fetchData = (locale, id) => {
     return Promise.reject('Invalid area id');
   }
 
-  return Promise.all([
-    fetch(`geo-json/${id}.json`).then(r => r.json()),
-    fetchLocalizedData(locale, id)
-  ])
-    .then(response => {
-      const geoJson = response[0],
-        localizedData = response[1];
-
-      return {
-        ...geoJson,
-        features: geoJson.features.map(f => ({
-          ...f,
-          properties: {
-            ...f.properties,
-            ...localizedData[f.properties.iso_a2],
-            id: f.properties.iso_a2
-          }
-        }))
-      };
+  // Return just the localized country data (no GeoJSON needed for SimpleWorldMap)
+  return fetchLocalizedData(locale, id)
+    .then(localizedData => {
+      console.log('Countries data loaded successfully for:', id, localizedData);
+      return localizedData;
     })
     .catch(function (ex) {
       console.error('parsing failed', ex);
+      throw ex;
     });
 };
 

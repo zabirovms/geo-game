@@ -8,11 +8,17 @@ import * as mapActions from './mapActions';
 import {colors, gameModes} from '../constants';
 
 const buildQuestionList = (countries, mode, count) => {
-    if (!countries || !countries.features) {
+    if (!countries) {
       console.error('buildQuestionList: countries data is undefined or invalid', countries);
       return [];
     }
-    const listOfCountries = countries.features.map(f => f.properties),
+    
+    // Convert object of countries to array of country data
+    const listOfCountries = Object.entries(countries).map(([code, data]) => ({
+        ...data,
+        id: code,
+        iso_a2: code
+      })),
       len = listOfCountries.length,
       questionByFeatureId = {};
 
