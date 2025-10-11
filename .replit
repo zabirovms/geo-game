@@ -1,4 +1,4 @@
-modules = ["nodejs-14", "web"]
+modules = ["web", "nodejs-20"]
 [agent]
 expertMode = true
 
@@ -15,10 +15,10 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "React Dev Server"
+args = "Game"
 
 [[workflows.workflow]]
-name = "React Dev Server"
+name = "Game"
 author = "agent"
 
 [[workflows.workflow.tasks]]
@@ -34,7 +34,7 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 5001
+localPort = 33779
 externalPort = 3001
 
 [[ports]]
@@ -51,5 +51,5 @@ externalPort = 3003
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["npx", "serve", "-s", "build", "-l", "5000"]
+run = ["npm", "run", "start"]
 build = ["npm", "run", "build"]
