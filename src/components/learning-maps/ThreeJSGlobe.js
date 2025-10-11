@@ -242,9 +242,21 @@ class ThreeJSGlobe extends Component {
       }
     });
 
-    this.svgCountries.forEach((path, idx) => {
+    // Temporarily add SVG to DOM to get bounding boxes
+    const tempDiv = document.createElement('div');
+    tempDiv.style.position = 'absolute';
+    tempDiv.style.visibility = 'hidden';
+    tempDiv.appendChild(this.svgMapDomEl.cloneNode(true));
+    document.body.appendChild(tempDiv);
+    
+    const tempSvg = tempDiv.querySelector('svg');
+    const tempPaths = Array.from(tempSvg.querySelectorAll('path'));
+    
+    tempPaths.forEach((path, idx) => {
       this.bBoxes[idx] = path.getBBox();
     });
+    
+    document.body.removeChild(tempDiv);
 
     this.svgCountries.forEach((path, idx) => {
       this.svgCountryDomEl.innerHTML = "";

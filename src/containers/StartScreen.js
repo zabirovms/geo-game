@@ -3,13 +3,11 @@ import {connect} from 'react-redux';
 import {getActiveLanguage, getTranslate} from 'react-localize-redux';
 
 import {footerItems, locale} from '../constants';
-import {supportedGameLocales} from '../services/localizationService';
 import {areas} from '../services/countriesService';
 
 import AreaList from '../components/start-screen/area-list/AreaList';
 import PageFooter from '../components/page-footer/PageFooter';
 import SimpleWorldMap from '../components/learning-maps/SimpleWorldMap';
-import ThreeJSGlobe from '../components/learning-maps/ThreeJSGlobe';
 
 class StartScreen extends Component {
 
@@ -33,14 +31,9 @@ class StartScreen extends Component {
             marginBottom: '2.5rem'
           }}>{translate('header.title')}</h3>
           <div className="row">
-            <div className="col-md-6 mb-4">
+            <div className="col-md-12 mb-4">
               <div className="map-card">
                 <SimpleWorldMap />
-              </div>
-            </div>
-            <div className="col-md-6 mb-4">
-              <div className="map-card">
-                <ThreeJSGlobe />
               </div>
             </div>
           </div>
